@@ -126,7 +126,29 @@ class LoginVC: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
     @objc func loginPressed(sender:UIButton) {
         // do stuff when the login button is pressed
         // Validate the username and password
-        performSegue(withIdentifier: "HomeSegue", sender: sender)
+        // Get data from backend database to get UserData.
+        let username = emailFld.text
+        let dbURL = URL(string: "157.230.170.230:3000/Users/\(username)")
+        var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
+        dbRequest.httpMethod = "GET"
+        let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
+            // Set the user data to the retrieved data.
+            print("\n\nHTTP REQUEST RESULTS:")
+            print(data)
+            print(response)
+            print(error)
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
+                print("\nJSON DATA:")
+                print(json)
+                self.userData = UserData(data: json as! [String:String])
+                print(self.userData!.userName)
+                print(self.userData!.elo)
+            } catch {
+                
+            }
+            self.performSegue(withIdentifier: "HomeSegue", sender: nil)
+        })
     }
     
     @objc func googleSignInPressed(sender:UIButton) {
@@ -180,9 +202,20 @@ class LoginVC: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
             let accessToken = authentication.accessToken
             
             // Get data from backend database to get UserData.
-            // Set the user data to the retrieved data.
+            let dbURL = URL(string: "")
+            var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
+            dbRequest.httpMethod = "GET"
+            let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
+                // Set the user data to the retrieved data.
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
+                    self.userData = UserData(data: json as! [String:String])
+                } catch {
+                    
+                }
+                self.performSegue(withIdentifier: "", sender: nil)
+            })
             
-            self.performSegue(withIdentifier: "", sender: nil)
             
             /*
             FIRAuth.auth()?.signIn(with: credential, completion: { (result, error) in

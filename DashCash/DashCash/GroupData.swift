@@ -16,6 +16,14 @@ class GroupData {
     var level: Int
     var size: Int
     
+    init(_uid: String, _members: [String], _pool: Double, _level: Int, _size: Int) {
+        uid = _uid
+        members = _members
+        pool = _pool
+        level = _level
+        size = _size
+    }
+    
     init(data: [String:Any]) {
         if let _uid = data["uID"] {
             uid = _uid as! String
@@ -33,6 +41,7 @@ class GroupData {
             pool = _pool as! Double
         } else {
             print("No pool data.")
+            pool = 0
         }
         if let _level = data["level"] {
             level = _level as! Int

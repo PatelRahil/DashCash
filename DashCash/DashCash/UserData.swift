@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class UserData {
-    var name:String
+    var userName:String
     var balance:Double
     var elo:Int
     var email:String
@@ -18,12 +18,12 @@ class UserData {
     var profilePic:UIImage
     
     init(data: [String:String]) {
-        // Init name
-        if let _name = data["name"] {
-            name = _name
+        // Init userName
+        if let _userName = data["userName"] {
+            userName = _userName
         } else {
-            print("No name data.")
-            name = ""
+            print("No userName data.")
+            userName = ""
         }
         
         // Init balance
@@ -89,9 +89,9 @@ class UserData {
         }
     }
     
-    // Init for testing
-    init (_name:String, _balance:Double, _elo:Int, _email: String, _guid: String) {
-        name = _name
+    // Init for custom user data.
+    init (_userName:String, _balance:Double, _elo:Int, _email: String, _guid: String) {
+        userName = _userName
         balance = _balance
         elo = _elo
         email = _email

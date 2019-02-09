@@ -11,17 +11,22 @@ import UIKit
 
 class HomeVC: UIViewController {
     var userData: UserData?
+    var groupData: GroupData?
     
     override func viewDidLoad() {
-        userData = UserData(_name: "John Doe", _balance: 12.5, _elo: 0, _email: "test@email.com", _guid: "l4g4jsm46s0g4k2jfb4")
+        userData = UserData(_userName: "John Doe", _balance: 12.5, _elo: 0, _email: "test@email.com", _guid: "l4g4jsm46s0g4k2jfb4")
         if let _userData = userData {
-            setupUI(with: _userData)
+            setupProfileUI(with: _userData)
+            setupGroupUI(with: _userData.guid)
         } else {
             print("User data does not exit yet.")
+            let tempUserData = UserData(_userName: "", _balance: 0, _elo: 0, _email: "", _guid: "")
+            setupProfileUI(with: tempUserData)
+            setupAbsentGroupUI()
         }
     }
     
-    private func setupUI(with data: UserData) {
+    private func setupProfileUI(with data: UserData) {
         view.backgroundColor = Colors.black
         
         // Gap between UI elements
@@ -46,7 +51,7 @@ class HomeVC: UIViewController {
         nameLbl.textAlignment = .center
         nameLbl.font = UIFont(name: nameLbl.font.fontName, size: 20)
         nameLbl.textColor = UIColor.white
-        nameLbl.text = data.name
+        nameLbl.text = data.userName
         
         // Set up balance label.
         let balanceLbl = UILabel()
@@ -72,19 +77,6 @@ class HomeVC: UIViewController {
         separator.backgroundColor = Colors.orange
         separator.frame = CGRect(x: view.frame.width / 24, y: balanceLbl.frame.maxY + offset, width: (view.frame.width - (view.frame.width / 12)), height: 1)
         
-        
-        if let guid = data.guid {
-            // Display this if the user is currently in a group.
-            
-            // Set up label for user's progress.
-
-        } else {
-            // Display this if the user is not currently in a group.
-            
-            // Set up button to join a group
-        }
-        
-        
         print("Profile Pic Frame: \(profilePicView.frame)")
         print("Name Label Frame: \(nameLbl.frame)")
         print("Balance Label Frame: \(balanceLbl.frame)")
@@ -92,5 +84,36 @@ class HomeVC: UIViewController {
         view.addSubview(nameLbl)
         view.addSubview(balanceLbl)
         view.addSubview(separator)
+    }
+    private func setupGroupUI(with guid: String?) {
+        if let _guid = guid {
+            // The user is a member of a group
+            
+            // A default group until the group data is loaded.
+            let tempGroupData = GroupData(_uid: "", _members: [], _pool: 0, _level: 0, _size: 0)
+            setupPresentGroupUI(with: tempGroupData)
+            
+            let dbURL = URL(string: "")
+            var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
+            dbRequest.httpMethod = "GET"
+            let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
+                // Set the user data to the retrieved data.
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
+                    self.groupData = GroupData(data: json as! [String:String])
+                } catch {
+                    
+                }
+                self.setupPresentGroupUI(with: self.groupData!)
+            })
+        } else {
+            setupAbsentGroupUI()
+        }
+    }
+    private func setupPresentGroupUI(with data: GroupData) {
+        
+    }
+    private func setupAbsentGroupUI() {
+        
     }
 }
