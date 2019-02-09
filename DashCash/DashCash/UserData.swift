@@ -15,7 +15,7 @@ class UserData {
     var elo:Int
     var email:String
     var guid:String?
-    var profilePic:UIImage?
+    var profilePic:UIImage
     
     init(data: [String:String]) {
         // Init name
@@ -61,7 +61,7 @@ class UserData {
         }
         
         // Init guid
-        if let _guid = data["current group ID"] {
+        if let _guid = data["current group ID"], _guid != "" {
             guid = _guid
         }
         
@@ -73,24 +73,30 @@ class UserData {
                         profilePic = _profilePic
                     } else {
                         print("Invalid profile picture data.")
-                        // Default profile picture.
-                        profilePic = UIImage(named: "")!
+                        profilePic = UIImage(named: "DefaultProfileImg")!
                     }
                 } else {
                     print("User has not set profile pic yet")
-                    // Default profile picture.
-                    profilePic = UIImage(named: "")!
+                    profilePic = UIImage(named: "DefaultProfileImg")!
                 }
             } else {
                 print("Profile picture link is not a URL.")
-                // Default profile picture.
-                profilePic = UIImage(named: "")!
+                profilePic = UIImage(named: "DefaultProfileImg")!
             }
         } else {
             print("No profile picture data.")
-            // Default profile picture.
-            profilePic = UIImage(named: "")!
+            profilePic = UIImage(named: "DefaultProfileImg")!
         }
+    }
+    
+    // Init for testing
+    init (_name:String, _balance:Double, _elo:Int, _email: String, _guid: String) {
+        name = _name
+        balance = _balance
+        elo = _elo
+        email = _email
+        guid = _guid
+        profilePic = UIImage(named: "DefaultProfileImg")!
     }
     
     func upload() {

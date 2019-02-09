@@ -40,7 +40,7 @@ class LoginVC: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
         view.backgroundColor = Colors.black
         
         
-        emailFld.frame = CGRect(origin: CGPoint(x: viewSize.width * edgeInset, y: viewSize.height / 4), size: CGSize(width: (viewSize.width - (2 * edgeInset) * viewSize.width), height: 25))
+        emailFld.frame = CGRect(origin: CGPoint(x: viewSize.width * edgeInset, y: viewSize.height / 3), size: CGSize(width: (viewSize.width - (2 * edgeInset) * viewSize.width), height: 25))
         emailFld.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         emailFld.textColor = UIColor.white
         emailFld.textAlignment = .center
@@ -77,19 +77,11 @@ class LoginVC: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
         loginBtn.addTarget(self, action: #selector(loginPressed(sender:)), for: .touchUpInside)
         loginBtn.addTarget(self, action: #selector(darkenButton(sender:)), for: .touchDown)
         
-        //separator.borderColor = Colors.orange.cgColor
         separator.backgroundColor = Colors.orange
         separator.frame = CGRect(x: viewSize.width * edgeInset * 0.5, y: loginBtn.frame.maxY + 20, width: (viewSize.width - (edgeInset) * viewSize.width), height: 1)
         
         let btnWidth = CGFloat(170)
         googleBtn.frame = CGRect(x: (viewSize.width - btnWidth) / 2, y: separator.frame.maxY + 20, width: btnWidth, height: 40)
-        //googleBtn.setImage(UIImage(named: "SignInWithGoogle"), for: .normal)
-        /*
-         if let imgView = googleBtn.imageView {
-         imgView.layer.cornerRadius = 4
-         }
-         */
-        //googleBtn.subviews.first?.contentMode = .scaleAspectFit
         googleBtn.backgroundColor = UIColor.white
         googleBtn.layer.cornerRadius = 4
         googleBtn.addTarget(self, action: #selector(googleSignInPressed(sender:)), for: .touchUpInside)
@@ -119,7 +111,9 @@ class LoginVC: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+        if let dest = segue.destination as? HomeVC {
+            dest.userData = userData
+        }
     }
     
     // button actions
@@ -131,6 +125,8 @@ class LoginVC: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
     
     @objc func loginPressed(sender:UIButton) {
         // do stuff when the login button is pressed
+        // Validate the username and password
+        performSegue(withIdentifier: "HomeSegue", sender: sender)
     }
     
     @objc func googleSignInPressed(sender:UIButton) {

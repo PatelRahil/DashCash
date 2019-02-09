@@ -20,9 +20,44 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <segue destination="QyS-V1-HbT" kind="show" identifier="CreateAccountSegue" id="TIg-rw-uEM"/>
+                        <segue destination="PVf-tz-qMa" kind="show" identifier="HomeSegue" id="9gO-XE-jgH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="87" y="33"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="qFo-XN-klu">
+            <objects>
+                <viewController id="QyS-V1-HbT" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3xh-cj-AuS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="MHa-WS-PyZ"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LDc-A2-Vpd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1022" y="-444"/>
+        </scene>
+        <!--HomeVC-->
+        <scene sceneID="nTE-Op-bU1">
+            <objects>
+                <viewController id="PVf-tz-qMa" customClass="HomeVC" customModule="DashCash" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YCA-jN-Ggi">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="57b-lJ-qfi"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zUJ-oV-EAB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1022" y="228"/>
         </scene>
     </scenes>
 </document>
