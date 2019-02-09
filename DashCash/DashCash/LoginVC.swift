@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import GoogleSignIn
 
-class LoginVC: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
+class LoginVC: UIViewController, GIDSignInUIDelegate {
     
     var userData: UserData?
     
@@ -128,27 +128,26 @@ class LoginVC: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
         // Validate the username and password
         // Get data from backend database to get UserData.
         let username = emailFld.text
-        let dbURL = URL(string: "157.230.170.230:3000/Users/\(username)")
+        let dbURL = URL(string: "http://157.230.170.230:3000/Users/\(username!)")
         var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
         dbRequest.httpMethod = "GET"
         let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
             // Set the user data to the retrieved data.
-            print("\n\nHTTP REQUEST RESULTS:")
-            print(data)
-            print(response)
-            print(error)
+            guard let data = data else {
+                return
+            }
             do {
-                let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
-                print("\nJSON DATA:")
-                print(json)
-                self.userData = UserData(data: json as! [String:String])
-                print(self.userData!.userName)
-                print(self.userData!.elo)
+                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+                self.userData = UserData(data: json as! [String:Any])
             } catch {
                 
             }
-            self.performSegue(withIdentifier: "HomeSegue", sender: nil)
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "HomeSegue", sender: nil)
+            }
         })
+        task.resume()
+        print("Post getting data (not chronologically though).")
     }
     
     @objc func googleSignInPressed(sender:UIButton) {
@@ -160,20 +159,6 @@ class LoginVC: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
     @objc func createAccountPressed(sender:UIButton) {
         sender.backgroundColor = sender.backgroundColor?.lighter(by: 22)
         performSegue(withIdentifier: "CreateAccountSegue", sender: sender)
-    }
-    
-    // textfield delegate functions
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.placeholder = nil
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField.tag == 0 && textField.text == nil {
-            textField.placeholder = "Email"
-        }
-        if textField.tag == 1 && textField.text == nil {
-            textField.placeholder = "Password"
-        }
     }
     
     // google sign in delegate functions
@@ -216,23 +201,24 @@ class LoginVC: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
                 self.performSegue(withIdentifier: "", sender: nil)
             })
             
-            
-            /*
-            FIRAuth.auth()?.signIn(with: credential, completion: { (result, error) in
-                if let error = error {
-                    print(error)
-                } else {
-                    print("Successfully signed in")
-                    UserData.name = user.profile.name
-                    guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
-                    UserData.uid = uid
-                    UserData.upload()
-                    print("UID: " + FIRAuth.auth()!.currentUser!.uid)
-                    self.performSegue(withIdentifier: "MapSegue", sender: nil)
-                }
-                
-            })
-            */
+            task.resume()
+        }
+    }
+}
+
+// MARK: UITextFieldDelegate extension
+extension LoginVC: UITextFieldDelegate {
+    // textfield delegate functions
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.placeholder = nil
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.tag == 0 && textField.text == nil {
+            textField.placeholder = "Email"
+        }
+        if textField.tag == 1 && textField.text == nil {
+            textField.placeholder = "Password"
         }
     }
 }

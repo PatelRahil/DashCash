@@ -14,12 +14,12 @@ class UserData {
     var balance:Double
     var elo:Int
     var email:String
-    var guid:String?
     var profilePic:UIImage
+    var progress:Int
     
-    init(data: [String:String]) {
+    init(data: [String:Any]) {
         // Init userName
-        if let _userName = data["userName"] {
+        if let _userName = data["userName"] as? String {
             userName = _userName
         } else {
             print("No userName data.")
@@ -27,46 +27,31 @@ class UserData {
         }
         
         // Init balance
-        if let _balanceStr = data["balance"] {
-            if let _balance = Double(_balanceStr) {
-                balance = _balance
-            } else {
-                print("Invalid balance data (not a double).")
-                balance = 0
-            }
+        if let _balance = data["balance"] as? Double {
+            balance = _balance
         } else {
             print("No balance data.")
             balance = 0
         }
         
         // Init elo
-        if let _eloString = data["elo"] {
-            if let _elo = Int(_eloString) {
-                elo = _elo
-            } else {
-                print("Invalid elo data (not an Int)")
-                elo = 0
-            }
+        if let _elo = data["elo"] as? Int {
+            elo = _elo
         } else {
             print("No elo data.")
             elo = 0
         }
         
         // Init email
-        if let _email = data["email"] {
+        if let _email = data["email"] as? String {
             email = _email
         } else {
             print("No email data.")
             email = ""
         }
         
-        // Init guid
-        if let _guid = data["current group ID"], _guid != "" {
-            guid = _guid
-        }
-        
         // Init profile picture
-        if let _profilePicLink = data["picture"] {
+        if let _profilePicLink = data["picture"] as? String {
             if let _profilePicURL = URL(string: _profilePicLink) {
                 if let _profilePicData = try? Data(contentsOf: _profilePicURL) {
                     if let _profilePic = UIImage(data: _profilePicData) {
@@ -87,16 +72,24 @@ class UserData {
             print("No profile picture data.")
             profilePic = UIImage(named: "DefaultProfileImg")!
         }
+        
+        // Init progress
+        if let _progress = data["progress"] as? Int {
+            progress = _progress
+        } else {
+            print("No progress data.")
+            progress = 0
+        }
     }
     
     // Init for custom user data.
-    init (_userName:String, _balance:Double, _elo:Int, _email: String, _guid: String) {
+    init (_userName:String, _balance:Double, _elo:Int, _email: String, _guid: String, _progress: Int) {
         userName = _userName
         balance = _balance
         elo = _elo
         email = _email
-        guid = _guid
         profilePic = UIImage(named: "DefaultProfileImg")!
+        progress = _progress
     }
     
     func upload() {
@@ -124,5 +117,14 @@ class UserData {
             print("Something went wrong with the snapshot")
         }
         */
+    }
+    
+    // For testing
+    func printValues() {
+        print("Username: \(userName)")
+        print("Balance: \(balance)")
+        print("ELO: \(elo)")
+        print("Email: \(email)")
+        print("Progress: \(progress)")
     }
 }

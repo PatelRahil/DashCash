@@ -11,49 +11,57 @@ import UIKit
 
 class GroupData {
     var uid: String
-    var members: [String]
-    var pool: Double
+    var members: [[String:Any]]
+    var buyIn: Double
     var level: Int
-    var size: Int
+    var startDate: Int
+    var endDate: Int
     
-    init(_uid: String, _members: [String], _pool: Double, _level: Int, _size: Int) {
+    init(_uid: String, _members: [[String:Any]], _buyIn: Double, _level: Int, _startDate: Int, _endDate: Int) {
         uid = _uid
         members = _members
-        pool = _pool
+        buyIn = _buyIn
         level = _level
-        size = _size
+        startDate = _startDate
+        endDate = _endDate
     }
     
     init(data: [String:Any]) {
-        if let _uid = data["uID"] {
-            uid = _uid as! String
+        if let _uid = data["_id"] as? String {
+            uid = _uid
         } else {
             print("No uID data.")
             uid = ""
         }
-        if let _members = data["members"] {
-            members = _members as! [String]
+        if let _members = data["members"] as? [[String:Any]] {
+            members = _members
         } else {
             print("No members data.")
             members = []
         }
-        if let _pool = data["pool"] {
-            pool = _pool as! Double
+        if let _buyIn = data["buyIn"] as? Double {
+            buyIn = _buyIn
         } else {
-            print("No pool data.")
-            pool = 0
+            print("No buyIn data.")
+            buyIn = 0
         }
-        if let _level = data["level"] {
-            level = _level as! Int
+        if let _level = data["level"] as? Int {
+            level = _level
         } else {
             print("No level data.")
             level = 0
         }
-        if let _size = data["size"] {
-            size = _size as! Int
+        if let _startDate = data["start date"] as? Int {
+            startDate = _startDate
         } else {
-            print("No size data.")
-            size = 0
+            print("No startDate data.")
+            startDate = 0
+        }
+        if let _endDate = data["end date"] as? Int {
+            endDate = _endDate
+        } else {
+            print("Node endDate data")
+            endDate = 0
         }
     }
 }
