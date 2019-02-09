@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45F6E10930A7DE776915F79B /* Pods_DashCash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A81036ECB8AE69F5F1730B6 /* Pods_DashCash.framework */; };
 		5A4241C5220EA28F00387E83 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4241C4220EA28F00387E83 /* AppDelegate.swift */; };
 		5A4241CA220EA28F00387E83 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A4241C8220EA28F00387E83 /* Main.storyboard */; };
 		5A4241CC220EA29200387E83 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A4241CB220EA29200387E83 /* Assets.xcassets */; };
@@ -15,6 +16,8 @@
 		5A4241E5220EA29200387E83 /* DashCashUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4241E4220EA29200387E83 /* DashCashUITests.swift */; };
 		5A4241F5220EA66300387E83 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4241F4220EA66300387E83 /* Colors.swift */; };
 		5A4241F9220EA70100387E83 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4241F8220EA70100387E83 /* LoginVC.swift */; };
+		EC01BEE714C2B78D753DF96B /* Pods_DashCashTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B054F5223DF0504C30BFFF9E /* Pods_DashCashTests.framework */; };
+		EC96F5315EF3EDC9B047F542 /* Pods_DashCashUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F13342185106306DC5223901 /* Pods_DashCashUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +38,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2F085079D91BCE499E3A4DFB /* Pods-DashCashUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DashCashUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DashCashUITests/Pods-DashCashUITests.release.xcconfig"; sourceTree = "<group>"; };
+		3FE22B33D4E3A602101C5473 /* Pods-DashCashUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DashCashUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DashCashUITests/Pods-DashCashUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4A81036ECB8AE69F5F1730B6 /* Pods_DashCash.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DashCash.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A4241C1220EA28F00387E83 /* DashCash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DashCash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A4241C4220EA28F00387E83 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5A4241C9220EA28F00387E83 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -49,6 +55,12 @@
 		5A4241E6220EA29200387E83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5A4241F4220EA66300387E83 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		5A4241F8220EA70100387E83 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		613CFB2736CAAE506EB4BDF3 /* Pods-DashCash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DashCash.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DashCash/Pods-DashCash.debug.xcconfig"; sourceTree = "<group>"; };
+		B054F5223DF0504C30BFFF9E /* Pods_DashCashTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DashCashTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA6DAD97920F9B46B066B901 /* Pods-DashCash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DashCash.release.xcconfig"; path = "Pods/Target Support Files/Pods-DashCash/Pods-DashCash.release.xcconfig"; sourceTree = "<group>"; };
+		BD7D17935D4275C52F6EAFED /* Pods-DashCashTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DashCashTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DashCashTests/Pods-DashCashTests.release.xcconfig"; sourceTree = "<group>"; };
+		DA0A00215D5DD71B747A8B3F /* Pods-DashCashTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DashCashTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DashCashTests/Pods-DashCashTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F13342185106306DC5223901 /* Pods_DashCashUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DashCashUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45F6E10930A7DE776915F79B /* Pods_DashCash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC01BEE714C2B78D753DF96B /* Pods_DashCashTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,12 +84,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC96F5315EF3EDC9B047F542 /* Pods_DashCashUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		59D4BF92915642123E3C5806 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				613CFB2736CAAE506EB4BDF3 /* Pods-DashCash.debug.xcconfig */,
+				BA6DAD97920F9B46B066B901 /* Pods-DashCash.release.xcconfig */,
+				DA0A00215D5DD71B747A8B3F /* Pods-DashCashTests.debug.xcconfig */,
+				BD7D17935D4275C52F6EAFED /* Pods-DashCashTests.release.xcconfig */,
+				3FE22B33D4E3A602101C5473 /* Pods-DashCashUITests.debug.xcconfig */,
+				2F085079D91BCE499E3A4DFB /* Pods-DashCashUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		5A4241B8220EA28F00387E83 = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +111,8 @@
 				5A4241D8220EA29200387E83 /* DashCashTests */,
 				5A4241E3220EA29200387E83 /* DashCashUITests */,
 				5A4241C2220EA28F00387E83 /* Products */,
+				59D4BF92915642123E3C5806 /* Pods */,
+				E49672851894EB9DB1A0A3BA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,6 +158,16 @@
 			path = DashCashUITests;
 			sourceTree = "<group>";
 		};
+		E49672851894EB9DB1A0A3BA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4A81036ECB8AE69F5F1730B6 /* Pods_DashCash.framework */,
+				B054F5223DF0504C30BFFF9E /* Pods_DashCashTests.framework */,
+				F13342185106306DC5223901 /* Pods_DashCashUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,9 +175,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5A4241E9220EA29200387E83 /* Build configuration list for PBXNativeTarget "DashCash" */;
 			buildPhases = (
+				73EDB6216FEE613E5AD76268 /* [CP] Check Pods Manifest.lock */,
 				5A4241BD220EA28F00387E83 /* Sources */,
 				5A4241BE220EA28F00387E83 /* Frameworks */,
 				5A4241BF220EA28F00387E83 /* Resources */,
+				15B70CF9A89A2E5165E9BE4D /* [CP] Embed Pods Frameworks */,
+				50EA4AA58831D105C96854DC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -152,6 +195,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5A4241EC220EA29200387E83 /* Build configuration list for PBXNativeTarget "DashCashTests" */;
 			buildPhases = (
+				13FC7BBD4290EFFF7E544654 /* [CP] Check Pods Manifest.lock */,
 				5A4241D1220EA29200387E83 /* Sources */,
 				5A4241D2220EA29200387E83 /* Frameworks */,
 				5A4241D3220EA29200387E83 /* Resources */,
@@ -170,6 +214,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5A4241EF220EA29200387E83 /* Build configuration list for PBXNativeTarget "DashCashUITests" */;
 			buildPhases = (
+				F89C6C588284AF5DB7F8CA32 /* [CP] Check Pods Manifest.lock */,
 				5A4241DC220EA29200387E83 /* Sources */,
 				5A4241DD220EA29200387E83 /* Frameworks */,
 				5A4241DE220EA29200387E83 /* Resources */,
@@ -253,6 +298,123 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		13FC7BBD4290EFFF7E544654 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DashCashTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		15B70CF9A89A2E5165E9BE4D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-DashCash/Pods-DashCash-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DashCash/Pods-DashCash-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		50EA4AA58831D105C96854DC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-DashCash/Pods-DashCash-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DashCash/Pods-DashCash-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		73EDB6216FEE613E5AD76268 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DashCash-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F89C6C588284AF5DB7F8CA32 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DashCashUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5A4241BD220EA28F00387E83 /* Sources */ = {
@@ -434,6 +596,7 @@
 		};
 		5A4241EA220EA29200387E83 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 613CFB2736CAAE506EB4BDF3 /* Pods-DashCash.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -452,6 +615,7 @@
 		};
 		5A4241EB220EA29200387E83 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BA6DAD97920F9B46B066B901 /* Pods-DashCash.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -470,6 +634,7 @@
 		};
 		5A4241ED220EA29200387E83 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DA0A00215D5DD71B747A8B3F /* Pods-DashCashTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -491,6 +656,7 @@
 		};
 		5A4241EE220EA29200387E83 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD7D17935D4275C52F6EAFED /* Pods-DashCashTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -512,6 +678,7 @@
 		};
 		5A4241F0220EA29200387E83 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FE22B33D4E3A602101C5473 /* Pods-DashCashUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -532,6 +699,7 @@
 		};
 		5A4241F1220EA29200387E83 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2F085079D91BCE499E3A4DFB /* Pods-DashCashUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
