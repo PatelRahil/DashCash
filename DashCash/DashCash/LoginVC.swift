@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import GoogleSignIn
 
-class LoginVC: UIViewController, GIDSignInUIDelegate {
+class LoginVC: UIViewController, GIDSignInUIDelegate, UserDataProtocol {
     var userData: UserData?
     
     let emailFld = UITextField()
@@ -111,7 +111,7 @@ class LoginVC: UIViewController, GIDSignInUIDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let dest = segue.destination as? HomeVC {
+        if var dest = segue.destination as? UserDataProtocol {
             dest.userData = userData
         }
     }
@@ -136,15 +136,21 @@ class LoginVC: UIViewController, GIDSignInUIDelegate {
         let password = passFld.text
         let dbURL = URL(string: "http://157.230.170.230:3000/auth/login")
         var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
+        let requestBody = try? JSONSerialization.data(withJSONObject: ["user":username!,"password":password!])
         dbRequest.httpMethod = "POST"
-        dbRequest.httpBody = "user:\(username!)&password:\(password!)".data(using: .utf8)
+        dbRequest.httpBody = requestBody!
+        dbRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        dbRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        print("\n\nREQUEST:\n\(dbRequest.httpBody)\n\n")
         let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
+            self.removeSpinner()
             // Set the user data to the retrieved data.
-            //print(data)
-            //print(response)
-            //print(error)
+            print(data)
+            print(response)
+            print(error)
             let httpResponse = response as! HTTPURLResponse
-            if httpResponse.statusCode == 200 {
+            if httpResponse.statusCode == 201 {
                 guard let data = data else { return }
                 do {
                     let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
@@ -160,13 +166,21 @@ class LoginVC: UIViewController, GIDSignInUIDelegate {
                 }
             }
             if httpResponse.statusCode == 406 {
-                let alertController = UIAlertController(title: "Mismatched info", message: "The email/username and password you provided do not match. Please try again.", preferredStyle: .alert)
-                self.present(alertController, animated: true, completion: nil)
+                
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: "Mismatched info", message: "The email/username and password you provided do not match. Please try again.", preferredStyle: .alert)
+                    let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
+                        alertController.dismiss(animated: true, completion: nil)
+                    })
+                    alertController.addAction(cancelAction)
+                    self.present(alertController, animated: true, completion: nil)
+                }
             }
 
             
             
         })
+        self.showSpinner(onView: self.view)
         task.resume()
         print("Post getting data (not chronologically though).")
     }
@@ -244,6 +258,37 @@ extension LoginVC: UITextFieldDelegate {
     }
 }
 
+
+var vSpinner : UIView?
+
+extension UIViewController {
+    func showSpinner(onView : UIView) {
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(style: .whiteLarge)
+        ai.startAnimating()
+        ai.center = spinnerView.center
+        
+        DispatchQueue.main.async {
+            spinnerView.addSubview(ai)
+            onView.addSubview(spinnerView)
+        }
+        
+        vSpinner = spinnerView
+    }
+    
+    func removeSpinner() {
+        DispatchQueue.main.async {
+            vSpinner?.removeFromSuperview()
+            vSpinner = nil
+        }
+    }
+}
+
 struct Tokens {
     static var userAuthToken = ""
+}
+
+protocol UserDataProtocol {
+    var userData: UserData? {get set}
 }

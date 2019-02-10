@@ -9,9 +9,10 @@
 import Foundation
 import UIKit
 
-class HomeVC: UIViewController {
+class HomeVC: UIViewController, UserDataProtocol {
     var userData: UserData?
     var groupData: GroupData?
+    var membersData: [UserData] = []
     var payouts:[Double] = []
     var isInGroup = false
     
@@ -26,14 +27,14 @@ class HomeVC: UIViewController {
     let startDateLbl = UILabel()
     let endDataLbl = UILabel()
     let separator2 = UIView()
-    let tableView = UITableView()
     let transactionBtn = UIButton()
+    
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(GroupMemberCell.self, forCellReuseIdentifier: "GroupMemberCell")
-        //userData = UserData(_userName: "John Doe", _balance: 12.5, _elo: 0, _email: "test@email.com", _guid: "l4g4jsm46s0g4k2jfb4", _progress: 24.5)
+        view.addSubview(tableView)
         if let _userData = userData {
             print("User values:")
             _userData.printValues()
@@ -51,7 +52,8 @@ class HomeVC: UIViewController {
                     print("Not and http response.")
                     return
                 }
-                if httpResponse.statusCode >= 200 {
+                
+                if httpResponse.statusCode >= 300 {
                     print("User doesn't have a group.")
                     DispatchQueue.main.async {
                         self.setupAbsentGroupUI()
@@ -64,7 +66,7 @@ class HomeVC: UIViewController {
                             self.setupPresentGroupUI(with: self.groupData!, progress: _userData.progress)
                         }
                     } catch {
-                        print("There was an error parsing the json.")
+                        print("There was an error parsing the json.\n\(error.localizedDescription)")
                     }
                 }
             })
@@ -170,7 +172,8 @@ class HomeVC: UIViewController {
         separator2.backgroundColor = Colors.orange
         
         origin = CGPoint(x: 0, y: separator2.frame.maxY)
-        size = CGSize(width: view.frame.width, height: view.frame.width - separator2.frame.maxY)
+        size = CGSize(width: view.frame.width, height: view.frame.height - separator2.frame.maxY)
+        tableView.frame = CGRect(origin: origin, size: size)
         tableView.backgroundColor = Colors.black
         tableView.separatorColor = Colors.orange
         
@@ -179,12 +182,12 @@ class HomeVC: UIViewController {
         view.addSubview(progressLbl)
         view.addSubview(progressBar)
         view.addSubview(separator2)
-        view.addSubview(tableView)
         
         tableView.reloadData()
         print("TABLEVIEW DATA:\n\n")
         print(tableView.frame)
         print(tableView.numberOfRows(inSection: 0))
+        retrieveMemberData()
     }
     private func setupAbsentGroupUI() {
         let offset: CGFloat = 20
@@ -194,6 +197,8 @@ class HomeVC: UIViewController {
         joinGroupBtn.setTitle("Tap here to look for a group!", for: .normal)
         joinGroupBtn.setTitleColor(Colors.textColor, for: .normal)
         joinGroupBtn.addTarget(self, action: #selector(findGroupTapped(_:)), for: .touchUpInside)
+        
+        tableView.isHidden = true
         
         view.addSubview(joinGroupBtn)
     }
@@ -209,7 +214,38 @@ class HomeVC: UIViewController {
             let score: Double = bigConst - smallConst * Double(i)
             let payoutCoef: Double = n * (score / totalScore)
             let payout: Double = payoutCoef * group.buyIn
-            payouts[i] = payout
+            payouts.append(payout)
+        }
+    }
+    
+    private func retrieveMemberData() {
+        for memberID in groupData!.members {
+            let dbURL = URL(string: "http://157.230.170.230:3000/Users/getByID/\(memberID)?token=\(Tokens.userAuthToken)")
+            var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
+            dbRequest.httpMethod = "GET"
+            let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
+                // Set the user data to the retrieved data.
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("Not an http response.")
+                    return
+                }
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
+                    let memberData = json as! [String : Any]
+                    let member = UserData(data: memberData)
+                    self.membersData.append(member)
+                    print("\n\nMEMBERS DATA:\n\(member.balance)")
+                    DispatchQueue.main.async {
+                        print("Reloading data...")
+                        self.tableView.reloadData()
+                    }
+                    
+                } catch {
+                    print("There was an error parsing the json.\n\(error.localizedDescription)")
+                }
+                //}
+            })
+            task.resume()
         }
     }
     
@@ -220,7 +256,7 @@ class HomeVC: UIViewController {
         performSegue(withIdentifier: "MakeTransactionSegue", sender: sender)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let dest = segue.destination as? JoinGroupVC {
+        if var dest = segue.destination as? UserDataProtocol {
             dest.userData = userData
         }
     }
@@ -231,14 +267,18 @@ extension HomeVC: UITableViewDelegate {
 }
 extension HomeVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groupData?.members.count ?? 0
+        return membersData.count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupMemberCell") as! GroupMemberCell
-        if let members = groupData?.members {
-            let member = members[indexPath.row]
-            let memberData = UserData(data: member)
+        if indexPath.row < membersData.count {
+            let memberData = membersData[indexPath.row]
+
             cell.usernameLbl.text = memberData.userName
             cell.userImg = UIImageView(image: memberData.profilePic)
             cell.progressLbl.text = "\(memberData.progress) min"
@@ -267,26 +307,36 @@ class GroupMemberCell: UITableViewCell {
     let divider = UIView()
     var payoutLbl = UILabel()
     
-    override func awakeFromNib() {
+    override func layoutSubviews() {
+        super.layoutSubviews()
         self.backgroundColor = Colors.black
-        var origin = CGPoint(x: 0, y: 5)
+        var origin = CGPoint(x: 5, y: 5)
         var size = CGSize(width: 60, height: 60)
         userImg.frame = CGRect(origin: origin, size: size)
         userImg.layer.cornerRadius = userImg.frame.width / 2
         userImg.layer.masksToBounds = true
-        origin = CGPoint(x: userImg.frame.maxX + 10, y: userImg.frame.minY)
-        size = CGSize(width: 100, height: self.frame.height)
+        origin = CGPoint(x: userImg.frame.maxX + 10, y: 0)
+        size = CGSize(width: 90, height: self.frame.height)
         usernameLbl.frame = CGRect(origin: origin, size: size)
-        size = CGSize(width: 40, height: self.frame.height)
+        usernameLbl.textAlignment = .left
+        size = CGSize(width: 70, height: self.frame.height)
         origin = CGPoint(x: self.frame.width - size.width - 10, y: 0)
         payoutLbl.frame = CGRect(origin: origin, size: size)
-        size = CGSize(width: 1, height: self.frame.height - 10)
-        origin = CGPoint(x: payoutLbl.frame.minY - 5, y: 5)
+        payoutLbl.textAlignment = .right
+        size = CGSize(width: 1, height: self.frame.height - 20)
+        origin = CGPoint(x: payoutLbl.frame.minX, y: 10)
         divider.frame = CGRect(origin: origin, size: size)
         divider.backgroundColor = Colors.orange
-        size = CGSize(width: 60, height: self.frame.height)
-        origin = CGPoint(x: divider.frame.minX - 5, y: 0)
+        size = CGSize(width: 70, height: self.frame.height)
+        origin = CGPoint(x: divider.frame.minX - size.width - 15, y: 0)
         progressLbl.frame = CGRect(origin: origin, size: size)
+        progressLbl.textAlignment = .right
+        
+        self.contentView.addSubview(userImg)
+        self.contentView.addSubview(usernameLbl)
+        self.contentView.addSubview(payoutLbl)
+        self.contentView.addSubview(divider)
+        self.contentView.addSubview(progressLbl)
     }
     
 }

@@ -11,13 +11,13 @@ import UIKit
 
 class GroupData {
     var uid: String
-    var members: [[String:Any]]
+    var members: [String]
     var buyIn: Double
     var level: Int
     var startDate: Int
     var endDate: Int
     
-    init(_uid: String, _members: [[String:Any]], _buyIn: Double, _level: Int, _startDate: Int, _endDate: Int) {
+    init(_uid: String, _members: [String], _buyIn: Double, _level: Int, _startDate: Int, _endDate: Int) {
         uid = _uid
         members = _members
         buyIn = _buyIn
@@ -27,13 +27,15 @@ class GroupData {
     }
     
     init(data: [String:Any]) {
+        print("\n\n\nDATA: ")
+        print(data)
         if let _uid = data["_id"] as? String {
             uid = _uid
         } else {
             print("No uID data.")
             uid = ""
         }
-        if let _members = data["members"] as? [[String:Any]] {
+        if let _members = data["members"] as? [String] {
             members = _members
         } else {
             print("No members data.")
@@ -60,7 +62,7 @@ class GroupData {
         if let _endDate = data["end date"] as? Int {
             endDate = _endDate
         } else {
-            print("Node endDate data")
+            print("No endDate data")
             endDate = 0
         }
     }

@@ -9,13 +9,14 @@
 import Foundation
 import UIKit
 
-class JoinGroupVC: UICollectionViewController {
+class JoinGroupVC: UICollectionViewController, UserDataProtocol {
     var userData: UserData?
     
     let itemsPerRow = 1
     let sectionInsets = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
     
-    var potentialGroups:[GroupData] = [
+    var potentialGroups:[GroupData] = []
+    /*
         GroupData(_uid: "a", _members: [], _buyIn: 1, _level: 1, _startDate: 10000, _endDate: 15000),
         GroupData(_uid: "b", _members: [], _buyIn: 2, _level: 2, _startDate: 20000, _endDate: 25000),
         GroupData(_uid: "c", _members: [], _buyIn: 3, _level: 3, _startDate: 30000, _endDate: 35000),
@@ -23,15 +24,49 @@ class JoinGroupVC: UICollectionViewController {
         GroupData(_uid: "e", _members: [], _buyIn: 5, _level: 5, _startDate: 50000, _endDate: 55000),
         GroupData(_uid: "f", _members: [], _buyIn: 6, _level: 6, _startDate: 60000, _endDate: 65000)
                                         ]
+    */
     override func viewDidLoad() {
 
         collectionView.delegate = self
         collectionView.dataSource = self
         setupUI()
+        fetchPotentialGroups()
     }
     
     func setupUI() {
         collectionView.backgroundColor = Colors.black
+    }
+    
+    func fetchPotentialGroups() {
+        let dbURL = URL(string: "http://157.230.170.230:3000/groups/elo/\(userData!.elo)=token?\(Tokens.userAuthToken)")
+        var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
+        dbRequest.httpMethod = "GET"
+        let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
+            // Set the user data to the retrieved data.
+            guard let data = data else {
+                return
+            }
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+                let groups = json as! [[String:Any]]
+                for group in groups {
+                    let groupData = GroupData(data: group)
+                    self.potentialGroups.append(groupData)
+                }
+            } catch {
+                
+            }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        })
+        task.resume()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if var dest = segue.destination as? UserDataProtocol {
+            dest.userData = userData
+        }
     }
 }
 
@@ -119,24 +154,28 @@ extension JoinGroupVC  {
                         guard let data = data else {
                             return
                         }
-                        do {
-                            let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-                            let data = json as! [String:Any]
-                            Tokens.userAuthToken = data["token"] as! String
-                            self.userData = UserData(data: data)
-                        } catch {
-                            
-                        }
-                        DispatchQueue.main.async {
-                            self.performSegue(withIdentifier: "BackHomeSegue", sender: nil)
+                        let httpResponse = response as! HTTPURLResponse
+                        if httpResponse.statusCode == 201 {
+                            DispatchQueue.main.async {
+                                confirmAlertController.dismiss(animated: true, completion: nil)
+                                self.performSegue(withIdentifier: "BackHomeSegue", sender: nil)
+                            }
+                        } else {
+                            print("Something went wrong with...")
                         }
                     })
                     task.resume()
                 }
             }
-            let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+            let noAction = UIAlertAction(title: "No", style: .cancel) { (action) in
+                confirmAlertController.dismiss(animated: true, completion: nil)
+            }
+            let cancelAction = UIAlertAction(title: "OK", style: .cancel) { (alert) in
+                denyAlertController.dismiss(animated: true, completion: nil)
+            }
             confirmAlertController.addAction(noAction)
             confirmAlertController.addAction(yesAction)
+            denyAlertController.addAction(cancelAction)
         }
     }
 }
