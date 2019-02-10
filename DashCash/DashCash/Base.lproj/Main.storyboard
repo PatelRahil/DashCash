@@ -56,11 +56,27 @@
                     </view>
                     <connections>
                         <segue destination="qwo-eP-fv7" kind="show" identifier="JoinGroupSegue" id="4HG-Dw-LFS"/>
+                        <segue destination="UzW-2P-KVC" kind="show" identifier="MakeTransactionSegue" id="hac-gX-Xfc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zUJ-oV-EAB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1022" y="228"/>
+        </scene>
+        <!--Make TransactionVC-->
+        <scene sceneID="haX-AX-u2c">
+            <objects>
+                <viewController id="UzW-2P-KVC" customClass="MakeTransactionVC" customModule="DashCash" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GgZ-fO-lOs">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="VU5-k1-F5I"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="af9-fG-8GT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1897" y="227"/>
         </scene>
         <!--Join GroupVC-->
         <scene sceneID="ML2-er-gZw">
@@ -71,19 +87,51 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="T7d-Eh-Vdw">
-                            <size key="itemSize" width="50" height="50"/>
+                            <size key="itemSize" width="207" height="202"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="23f-qH-BJW">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Default" id="23f-qH-BJW" customClass="PotentialGroupCell" customModule="DashCash" customModuleProvider="target">
+                                <rect key="frame" x="84" y="0.0" width="207" height="202"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="207" height="202"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KeB-VI-So7">
+                                            <rect key="frame" x="0.0" y="59" width="207" height="43"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ojc-qs-oWP">
+                                            <rect key="frame" x="0.0" y="149" width="199" height="34"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2i1-5H-GRc">
+                                            <rect key="frame" x="12" y="10" width="187" height="34"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </view>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="KeB-VI-So7" secondAttribute="trailing" id="Tq1-iw-OVq"/>
+                                    <constraint firstItem="KeB-VI-So7" firstAttribute="leading" secondItem="23f-qH-BJW" secondAttribute="leading" id="ad8-MB-Pe2"/>
+                                    <constraint firstItem="KeB-VI-So7" firstAttribute="top" secondItem="23f-qH-BJW" secondAttribute="top" constant="59" id="te3-qD-Edj"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="buyInLbl" destination="2i1-5H-GRc" id="0OW-5I-GRH"/>
+                                    <outlet property="levelLbl" destination="KeB-VI-So7" id="2gB-Al-0r7"/>
+                                    <outlet property="sizeLbl" destination="Ojc-qs-oWP" id="zMR-BR-9BC"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -91,10 +139,16 @@
                             <outlet property="delegate" destination="qwo-eP-fv7" id="BU5-vM-SZH"/>
                         </connections>
                     </collectionView>
+                    <connections>
+                        <segue destination="PVf-tz-qMa" kind="show" identifier="BackHomeSegue" id="rYN-7u-8FJ"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ly6-bo-YGh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1809" y="227"/>
+            <point key="canvasLocation" x="1898" y="-445"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="rYN-7u-8FJ"/>
+    </inferredMetricsTieBreakers>
 </document>

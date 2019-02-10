@@ -27,6 +27,7 @@ class HomeVC: UIViewController {
     let endDataLbl = UILabel()
     let separator2 = UIView()
     let tableView = UITableView()
+    let transactionBtn = UIButton()
     
     override func viewDidLoad() {
         tableView.delegate = self
@@ -41,7 +42,7 @@ class HomeVC: UIViewController {
             
             // Gets the group that the current user is in
             // if he/she is in one.
-            let dbURL = URL(string: "http://157.230.170.230:3000/Users/\(_userData.userName)/getGroup")
+            let dbURL = URL(string: "http://157.230.170.230:3000/Users/\(_userData.userName)/getGroup?token=\(Tokens.userAuthToken)")
             var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
             dbRequest.httpMethod = "GET"
             let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
@@ -52,12 +53,16 @@ class HomeVC: UIViewController {
                 }
                 if httpResponse.statusCode >= 200 {
                     print("User doesn't have a group.")
-                    self.setupAbsentGroupUI()
+                    DispatchQueue.main.async {
+                        self.setupAbsentGroupUI()
+                    }
                 } else {
                     do {
                         let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers)
                         self.groupData = GroupData(data: json as! [String:Any])
-                        self.setupPresentGroupUI(with: self.groupData!, progress: _userData.progress)
+                        DispatchQueue.main.async {
+                            self.setupPresentGroupUI(with: self.groupData!, progress: _userData.progress)
+                        }
                     } catch {
                         print("There was an error parsing the json.")
                     }
@@ -96,7 +101,7 @@ class HomeVC: UIViewController {
         nameLbl.frame = CGRect(origin: nameLblOrigin, size: nameLblSize)
         nameLbl.textAlignment = .center
         nameLbl.font = UIFont(name: nameLbl.font.fontName, size: 20)
-        nameLbl.textColor = UIColor.white
+        nameLbl.textColor = Colors.textColor
         nameLbl.text = data.userName
         
         // Set up balance label.
@@ -121,10 +126,17 @@ class HomeVC: UIViewController {
         separator.backgroundColor = Colors.orange
         separator.frame = CGRect(x: view.frame.width / 24, y: balanceLbl.frame.maxY + offset, width: (view.frame.width - (view.frame.width / 12)), height: 1)
 
+        let origin = CGPoint(x: offset, y: offset * 2)
+        let size = CGSize(width: 30, height: 30)
+        transactionBtn.frame = CGRect(origin: origin, size: size)
+        transactionBtn.setImage(UIImage(named: "TransactionButton"), for: .normal)
+        transactionBtn.addTarget(self, action: #selector(transactionBtnTapped(_:)), for: .touchUpInside)
+        
         view.addSubview(profilePicView)
         view.addSubview(nameLbl)
         view.addSubview(balanceLbl)
         view.addSubview(separator)
+        view.addSubview(transactionBtn)
     }
     
     private func setupPresentGroupUI(with gData: GroupData, progress: Int) {
@@ -180,6 +192,7 @@ class HomeVC: UIViewController {
         let size = CGSize(width: view.frame.width, height: view.frame.height - origin.y)
         joinGroupBtn.frame = CGRect(origin: origin, size: size)
         joinGroupBtn.setTitle("Tap here to look for a group!", for: .normal)
+        joinGroupBtn.setTitleColor(Colors.textColor, for: .normal)
         joinGroupBtn.addTarget(self, action: #selector(findGroupTapped(_:)), for: .touchUpInside)
         
         view.addSubview(joinGroupBtn)
@@ -201,12 +214,14 @@ class HomeVC: UIViewController {
     }
     
     @objc func findGroupTapped(_ sender: Any) {
-        print("Tapped!")
         performSegue(withIdentifier: "JoinGroupSegue", sender: sender)
+    }
+    @objc func transactionBtnTapped(_ sender: Any) {
+        performSegue(withIdentifier: "MakeTransactionSegue", sender: sender)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? JoinGroupVC {
-            dest.userData = userData!
+            dest.userData = userData
         }
     }
 }

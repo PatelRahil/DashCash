@@ -10,9 +10,14 @@ import Foundation
 import UIKit
 
 struct Colors {
-    static let orange = UIColor.init(r: 255, g: 157, b: 45, a: 1)
-    static let black = UIColor.init(r: 5, g: 5, b: 5, a: 1)
+    //static let orange = UIColor.init(r: 255, g: 157, b: 45, a: 1)
+    //static let black = UIColor.init(r: 5, g: 5, b: 5, a: 1)
+    static let black = UIColor.init(r: 248, g: 248, b: 248, a: 1)
+    static let orange = UIColor.init(r: 26, g: 126, b: 126, a: 1)
+    
     static let burntRed = UIColor.init(r: 231, g: 76, b: 60, a: 1)
+    
+    static let textColor = UIColor.black
 }
 
 extension UIColor {

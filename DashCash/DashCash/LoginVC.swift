@@ -11,7 +11,6 @@ import UIKit
 import GoogleSignIn
 
 class LoginVC: UIViewController, GIDSignInUIDelegate {
-    
     var userData: UserData?
     
     let emailFld = UITextField()
@@ -41,8 +40,8 @@ class LoginVC: UIViewController, GIDSignInUIDelegate {
         
         
         emailFld.frame = CGRect(origin: CGPoint(x: viewSize.width * edgeInset, y: viewSize.height / 3), size: CGSize(width: (viewSize.width - (2 * edgeInset) * viewSize.width), height: 25))
-        emailFld.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        emailFld.textColor = UIColor.white
+        emailFld.attributedPlaceholder = NSAttributedString(string: "Email / Username", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        emailFld.textColor = Colors.textColor
         emailFld.textAlignment = .center
         emailFld.tag = 0;
         
@@ -52,7 +51,7 @@ class LoginVC: UIViewController, GIDSignInUIDelegate {
         passFld.frame = CGRect(origin: CGPoint(x: emailFld.frame.minX, y: emailFld.frame.maxY + 40), size: CGSize(width: emailFld.frame.size.width, height: 25))
         passFld.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         passFld.isSecureTextEntry = true
-        passFld.textColor = UIColor.white
+        passFld.textColor = Colors.textColor
         passFld.textAlignment = .center
         passFld.tag = 1
         
@@ -71,11 +70,12 @@ class LoginVC: UIViewController, GIDSignInUIDelegate {
         
         loginBtn.frame = CGRect(origin: CGPoint(x: passFld.frame.minX, y: passFld.frame.maxY + 40), size: CGSize(width: passFld.frame.size.width, height: 40))
         loginBtn.setTitle("Login", for: .normal)
-        loginBtn.setTitleColor(.white, for: .normal)
+        loginBtn.setTitleColor(Colors.textColor, for: .normal)
         loginBtn.backgroundColor = Colors.orange
         loginBtn.layer.cornerRadius = 4
         loginBtn.addTarget(self, action: #selector(loginPressed(sender:)), for: .touchUpInside)
         loginBtn.addTarget(self, action: #selector(darkenButton(sender:)), for: .touchDown)
+        loginBtn.addTarget(self, action: #selector(lightenButton(sender:)), for: .touchUpInside);
         
         separator.backgroundColor = Colors.orange
         separator.frame = CGRect(x: viewSize.width * edgeInset * 0.5, y: loginBtn.frame.maxY + 20, width: (viewSize.width - (edgeInset) * viewSize.width), height: 1)
@@ -90,7 +90,7 @@ class LoginVC: UIViewController, GIDSignInUIDelegate {
         createAccountBtn.frame = CGRect(x: (viewSize.width - btnWidth) / 2, y: googleBtn.frame.maxY + 20, width: btnWidth, height: 40)
         createAccountBtn.backgroundColor = Colors.orange
         createAccountBtn.setTitle("Create an account", for: .normal)
-        createAccountBtn.setTitleColor(.white, for: .normal)
+        createAccountBtn.setTitleColor(Colors.textColor, for: .normal)
         createAccountBtn.layer.cornerRadius = 4
         createAccountBtn.addTarget(self, action: #selector(createAccountPressed(sender:)), for: .touchUpInside)
         createAccountBtn.addTarget(self, action: #selector(darkenButton(sender:)), for: .touchDown)
@@ -122,29 +122,50 @@ class LoginVC: UIViewController, GIDSignInUIDelegate {
             btn.backgroundColor = btn.backgroundColor?.darker()
         }
     }
+    @objc func lightenButton(sender:Any) {
+        if let btn = sender as? UIButton {
+            btn.backgroundColor = btn.backgroundColor?.lighter()
+        }
+    }
     
     @objc func loginPressed(sender:UIButton) {
         // do stuff when the login button is pressed
         // Validate the username and password
         // Get data from backend database to get UserData.
         let username = emailFld.text
-        let dbURL = URL(string: "http://157.230.170.230:3000/Users/\(username!)")
+        let password = passFld.text
+        let dbURL = URL(string: "http://157.230.170.230:3000/auth/login")
         var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
-        dbRequest.httpMethod = "GET"
+        dbRequest.httpMethod = "POST"
+        dbRequest.httpBody = "user:\(username!)&password:\(password!)".data(using: .utf8)
         let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
             // Set the user data to the retrieved data.
-            guard let data = data else {
-                return
+            //print(data)
+            //print(response)
+            //print(error)
+            let httpResponse = response as! HTTPURLResponse
+            if httpResponse.statusCode == 200 {
+                guard let data = data else { return }
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+                    let data = json as! [String:Any]
+                    Tokens.userAuthToken = data["token"] as! String
+                    self.userData = UserData(data: data)
+                    self.userData?.printValues()
+                    print(Tokens.userAuthToken)
+                } catch {
+                }
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "HomeSegue", sender: nil)
+                }
             }
-            do {
-                let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-                self.userData = UserData(data: json as! [String:Any])
-            } catch {
-                
+            if httpResponse.statusCode == 406 {
+                let alertController = UIAlertController(title: "Mismatched info", message: "The email/username and password you provided do not match. Please try again.", preferredStyle: .alert)
+                self.present(alertController, animated: true, completion: nil)
             }
-            DispatchQueue.main.async {
-                self.performSegue(withIdentifier: "HomeSegue", sender: nil)
-            }
+
+            
+            
         })
         task.resume()
         print("Post getting data (not chronologically though).")
@@ -221,4 +242,8 @@ extension LoginVC: UITextFieldDelegate {
             textField.placeholder = "Password"
         }
     }
+}
+
+struct Tokens {
+    static var userAuthToken = ""
 }

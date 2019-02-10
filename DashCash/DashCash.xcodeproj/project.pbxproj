@@ -20,6 +20,7 @@
 		5A4241FD220EC5B400387E83 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4241FC220EC5B400387E83 /* HomeVC.swift */; };
 		5A4241FF220EDA6900387E83 /* GroupData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4241FE220EDA6900387E83 /* GroupData.swift */; };
 		5A424201220F50A000387E83 /* JoinGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A424200220F50A000387E83 /* JoinGroupVC.swift */; };
+		5A424203220FA97D00387E83 /* MakeTransactionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A424202220FA97D00387E83 /* MakeTransactionVC.swift */; };
 		EC01BEE714C2B78D753DF96B /* Pods_DashCashTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B054F5223DF0504C30BFFF9E /* Pods_DashCashTests.framework */; };
 		EC96F5315EF3EDC9B047F542 /* Pods_DashCashUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F13342185106306DC5223901 /* Pods_DashCashUITests.framework */; };
 /* End PBXBuildFile section */
@@ -63,6 +64,7 @@
 		5A4241FC220EC5B400387E83 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		5A4241FE220EDA6900387E83 /* GroupData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupData.swift; sourceTree = "<group>"; };
 		5A424200220F50A000387E83 /* JoinGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGroupVC.swift; sourceTree = "<group>"; };
+		5A424202220FA97D00387E83 /* MakeTransactionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeTransactionVC.swift; sourceTree = "<group>"; };
 		613CFB2736CAAE506EB4BDF3 /* Pods-DashCash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DashCash.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DashCash/Pods-DashCash.debug.xcconfig"; sourceTree = "<group>"; };
 		B054F5223DF0504C30BFFF9E /* Pods_DashCashTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DashCashTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA6DAD97920F9B46B066B901 /* Pods-DashCash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DashCash.release.xcconfig"; path = "Pods/Target Support Files/Pods-DashCash/Pods-DashCash.release.xcconfig"; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				5A4241FE220EDA6900387E83 /* GroupData.swift */,
 				5A4241FA220EAF0900387E83 /* UserData.swift */,
 				5A4241F4220EA66300387E83 /* Colors.swift */,
+				5A424202220FA97D00387E83 /* MakeTransactionVC.swift */,
 				5A424200220F50A000387E83 /* JoinGroupVC.swift */,
 				5A4241C8220EA28F00387E83 /* Main.storyboard */,
 				5A4241CB220EA29200387E83 /* Assets.xcassets */,
@@ -440,6 +443,7 @@
 				5A424201220F50A000387E83 /* JoinGroupVC.swift in Sources */,
 				5A4241FB220EAF0900387E83 /* UserData.swift in Sources */,
 				5A4241F9220EA70100387E83 /* LoginVC.swift in Sources */,
+				5A424203220FA97D00387E83 /* MakeTransactionVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
