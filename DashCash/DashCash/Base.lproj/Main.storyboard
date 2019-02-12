@@ -119,18 +119,17 @@
                                 <rect key="frame" x="16" y="54" width="13" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="back" image="back_button"/>
-                                <connections>
-                                    <segue destination="PVf-tz-qMa" kind="show" id="q9O-rH-ScF"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="VU5-k1-F5I"/>
                     </view>
                     <connections>
+                        <outlet property="backButton" destination="imV-7f-bDy" id="NaO-K1-GVN"/>
                         <outlet property="segController" destination="7ef-Hz-Xhu" id="ZBL-OD-rnk"/>
                         <outlet property="submitBtn" destination="2ve-rD-fDL" id="ev6-xF-QgX"/>
                         <outlet property="txtField" destination="d5E-qe-PA7" id="Wqo-qI-LVA"/>
+                        <segue destination="PVf-tz-qMa" kind="show" identifier="PayToHomeSegue" id="VPV-B3-WFN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="af9-fG-8GT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -212,6 +211,6 @@
         <image name="back_button" width="24" height="40"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="q9O-rH-ScF"/>
+        <segue reference="VPV-B3-WFN"/>
     </inferredMetricsTieBreakers>
 </document>

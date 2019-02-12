@@ -16,6 +16,7 @@ class MakeTransactionVC: UIViewController, UserDataProtocol {
     @IBOutlet weak var segController: UISegmentedControl!
     @IBOutlet weak var submitBtn: UIButton!
     @IBOutlet weak var txtField: UITextField!
+    @IBOutlet weak var backButton: UIButton!
     
     var segControllerState = true
     
@@ -35,10 +36,24 @@ class MakeTransactionVC: UIViewController, UserDataProtocol {
         submitBtn.setTitleColor(Colors.textColor, for: .normal)
         submitBtn.layer.cornerRadius = 10
         submitBtn.addTarget(self, action: #selector(submitTapped(_:)), for: .touchUpInside)
+        
+        backButton.addTarget(self, action: #selector(backTapped(_:)), for: .touchUpInside)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let dbURL = URL(string: "http://157.230.170.230:3000/pay")
+        if var dest = segue.destination as? UserDataProtocol {
+            print("\n\nBALANCE:\n")
+            print(userData?.balance)
+            dest.userData = userData
+        }
+    }
+    
+    @objc private func segControllerToggled(_ sender: Any) {
+        
+    }
+    
+    @objc private func backTapped(_ sender: Any) {
+        let dbURL = URL(string: "http://157.230.170.230:3000/Users/\(userData!.userName)?token=\(Tokens.userAuthToken)")
         var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
         dbRequest.httpMethod = "GET"
         let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
@@ -51,25 +66,27 @@ class MakeTransactionVC: UIViewController, UserDataProtocol {
             do {
                 let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
                 let updatedData = json as! [String : Any]
-                let updatedUser = UserData(data: memberData)
-                userData = updatedData
+                let updatedUser = UserData(data: updatedData)
+                self.userData = updatedUser
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "PayToHomeSegue", sender: sender)
+                }
             } catch {
                 
             }
         })
-        if var dest = segue.destination as? UserDataProtocol {
-            dest.userData = userData
-        }
-    }
-    
-    @objc private func segControllerToggled(_ sender: Any) {
         
+        // Displays the loading spinner animation
+        self.showSpinner(onView: self.view)
+        task.resume()
     }
     
+    // Sends the backend all the information it needs to
+    // validate payment and update the database.
     @objc private func submitTapped(_ sender: Any) {
         let dbURL = URL(string: "http://157.230.170.230:3000/pay")
         var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
-        let httpBody = try? JSONSerialization.data(withJSONObject: ["amount":txtField.text!])
+        let httpBody = try? JSONSerialization.data(withJSONObject: ["amount":txtField.text!, "user":userData!.userName])
         dbRequest.httpBody = httpBody
         dbRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         dbRequest.setValue("application/json", forHTTPHeaderField: "Accept")
@@ -82,10 +99,10 @@ class MakeTransactionVC: UIViewController, UserDataProtocol {
                 return
             }
             do {
-                //let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-                //let groups = json as! [[String:Any]]
+
                 let httpResponse = response as! HTTPURLResponse
                 
+                // Opens an embedded browser for the user to sign into PayPal
                 if let url = httpResponse.url {
                     let svc = SFSafariViewController(url: url)
                     DispatchQueue.main.async {

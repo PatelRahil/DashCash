@@ -26,7 +26,7 @@ class JoinGroupVC: UICollectionViewController, UserDataProtocol {
                                         ]
     */
     override func viewDidLoad() {
-
+        print("SETTING UP")
         collectionView.delegate = self
         collectionView.dataSource = self
         setupUI()
@@ -38,11 +38,15 @@ class JoinGroupVC: UICollectionViewController, UserDataProtocol {
     }
     
     func fetchPotentialGroups() {
-        let dbURL = URL(string: "http://157.230.170.230:3000/groups/elo/\(userData!.elo)=token?\(Tokens.userAuthToken)")
+        print(userData?.elo)
+        let dbURL = URL(string: "http://157.230.170.230:3000/groups/elo/\(userData!.elo)")
         var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
         dbRequest.httpMethod = "GET"
         let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
             // Set the user data to the retrieved data.
+            print(data)
+            print(response)
+            print(error)
             guard let data = data else {
                 return
             }
@@ -53,6 +57,7 @@ class JoinGroupVC: UICollectionViewController, UserDataProtocol {
                     let groupData = GroupData(data: group)
                     self.potentialGroups.append(groupData)
                 }
+                print(self.potentialGroups)
             } catch {
                 
             }
@@ -103,6 +108,7 @@ extension JoinGroupVC  {
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Default", for: cellForItemAt) as? PotentialGroupCell {
+            print("ADDING CELL")
             cell.backgroundColor = Colors.orange
             cell.layer.cornerRadius = 8
             let group = potentialGroups[cellForItemAt.section]
@@ -137,7 +143,7 @@ extension JoinGroupVC  {
             if let formattedBalance = currencyFormatter.string(from: NSNumber(value: userData!.balance)) {
                 balanceStr = formattedBalance
             } else {
-                balanceStr = String.init(format: "$%.02f", group.buyIn)
+                balanceStr = String.init(format: "$%.02f", userData!.balance)
             }
             let confirmAlertController = UIAlertController(title: "Verify", message: "Are you sure you want to join this group? The buy in is \(buyInStr) and you have \(balanceStr)", preferredStyle: .actionSheet)
             let denyAlertController = UIAlertController(title: "Insufficient funds", message: "Sorry, you do not have a high enough balance to join this group.", preferredStyle: .alert)
@@ -145,10 +151,13 @@ extension JoinGroupVC  {
                 if (group.buyIn > self.userData!.balance) {
                     self.present(denyAlertController, animated: true, completion: nil)
                 } else {
-                    let dbURL = URL(string: "http://157.230.170.230:3000/users/join=token?\(Tokens.userAuthToken)")
+                    let dbURL = URL(string: "http://157.230.170.230:3000/users/join")
                     var dbRequest = URLRequest(url: dbURL!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 60)
+                    let httpBody = try? JSONSerialization.data(withJSONObject: ["userName":self.userData!.userName, "groupId":group.uid])
+                    dbRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                    dbRequest.setValue("application/json", forHTTPHeaderField: "Accept")
                     dbRequest.httpMethod = "POST"
-                    dbRequest.httpBody = "user:\(self.userData!.userName)&groupID:\(group.uid)".data(using: .utf8)
+                    dbRequest.httpBody = httpBody
                     let task = URLSession.shared.dataTask(with: dbRequest, completionHandler: { (data, response, error) in
                         // Set the user data to the retrieved data.
                         guard let data = data else {
@@ -176,6 +185,7 @@ extension JoinGroupVC  {
             confirmAlertController.addAction(noAction)
             confirmAlertController.addAction(yesAction)
             denyAlertController.addAction(cancelAction)
+            self.present(confirmAlertController, animated: true, completion: nil)
         }
     }
 }
